@@ -1,0 +1,65 @@
+#include <iostream>
+using namespace std;
+
+class MaxHeap {
+private:
+    int a[100] = {0};
+    int count = 0;
+
+    void maxHeapInsert(int x) {
+        if (count == 100) {
+            cout << "Full heap" << endl;
+            return;
+        }
+        count++;
+        int i = count;
+        while (i > 1 && x > a[i / 2]) {
+            a[i] = a[i / 2];
+            i = i / 2;
+        }
+        a[i] = x;
+    }
+
+    int maxHeapExtract() {
+        if (count == 0) {
+            cout << "Empty heap" << endl;
+            return -1;
+        }
+        int maxVal = a[0];
+        int lastElement = a[count--];
+        int i = 0;
+        int child = 1;
+        while (child <= count) {
+            if (child < count && a[child] < a[child + 1]) {
+                child++;
+            }
+            if (lastElement >= a[child]) {
+                break;
+            }
+            a[i] = a[child];
+            i = child;
+            child = child * 2 + 1;
+        }
+        a[i] = lastElement;
+        return maxVal;
+    }
+
+public:
+    void heapSort(int a[], int n) {
+        for (int i = 0; i < n; i++) {
+            maxHeapInsert(a[i]);
+        }
+        for (int i = n - 1; i >= 0; i--) {
+            a[i] = maxHeapExtract();
+        }
+    }
+};
+
+int main() {
+    int arr[] = {1, 6, 2, 4, 21, 235, 32};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    MaxHeap heap1;
+    heap1.heapSort(arr, n);
+
+    cout << "Sorted arra
